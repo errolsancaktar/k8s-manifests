@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-controller-tcp
+  namespace: unifi
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "shared-10.10.9.182"
+spec:
+  selector:
+    app: unifi
+  ports:
+    - name: device-comm
+      port: 8080
+      protocol: TCP
+    - name: default-console
+      port: 8443
+      protocol: TCP
+    - name: secure-redirect
+      port: 8843
+      protocol: TCP
+    - name: http-redirect
+      port: 8880
+      protocol: TCP
+    - name: speedtest
+      port: 6789
+      protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: 10.10.9.182

@@ -1,0 +1,120 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: plex-deployment
+  namespace: mediastack
+  labels:
+    app: plex
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      containers:
+      - name: plex
+        image:  ghcr.io/linuxserver/plex:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+            cpu: "500m"
+            memory: "4096Mi"
+          requests:
+            cpu: "50m"
+            memory: "2048Mi"
+        readinessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 300
+          timeoutSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 300
+          timeoutSeconds: 30
+        env:
+        - name: PUID
+          value: "911"
+        - name: GUID
+          value: "911"
+        - name: PLEX_CLAIM 
+          value: "claim-DJSozyZzszv8tvo37v5Y"
+        - name: ADVERTISE_IP 
+          value: "http://10.10.9.180:32400"
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: TZ
+          value: "America/Denver"
+        - name: ALLOWED_NETWORKS
+          value: "10.10.8.0/23"
+        ports:
+        - containerPort: 32400     # < required network portnumber. See https://hub.docker.com/r/linuxserver/plex
+          name: pms-web            # < reference name from the port in the service yaml
+          protocol: TCP
+        - containerPort: 32469
+          name: dlna-tcp
+          protocol: TCP
+        - containerPort: 1900
+          name: dlna-udp
+          protocol: UDP
+        - containerPort: 3005
+          name: plex-companion
+          protocol: TCP
+        - containerPort: 5353
+          name: discovery-udp
+          protocol: UDP
+        - containerPort: 8324
+          name: plex-roku
+          protocol: TCP
+        - containerPort: 32410
+          name: gdm-32410
+          protocol: UDP
+        - containerPort: 32412
+          name: gdm-32412
+          protocol: UDP
+        - containerPort: 32413
+          name: gdm-32413
+          protocol: UDP
+        - containerPort: 32414
+          name: gdm-32414
+          protocol: UDP
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: "/config"
+          name: plex-config
+        - mountPath: "/data"
+          name: media
+        - mountPath: "/transcode"
+          name: transcode
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      nodeName: cs1
+      volumes:
+      - name: media
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/media"
+      - name: transcode
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/plex/transcode"
+      - name: plex-config
+        persistentVolumeClaim:
+          claimName: plex-config-pvc
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

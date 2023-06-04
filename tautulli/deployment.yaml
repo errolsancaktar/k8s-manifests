@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tautulli-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tautulli
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      containers:
+      - name: tautulli
+        image: lscr.io/linuxserver/tautulli:latest
+        env:
+        - name: PUID
+          value: 1000
+        - name: GUID
+          value: 1000
+        - name: TZ
+          value: "America/Denver"
+        ports:
+        - containerPort: 8181
+        volumeMounts:
+        - mountPath: /data
+          name: homebox-data
+      volumes:
+      - name: homebox-data
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/homebox"
