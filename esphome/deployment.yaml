@@ -16,6 +16,7 @@ spec:
       containers:
       - name: esphome
         image: esphome/esphome
+        imagePullPolicy: Always
         env:
         - name: PUID
           value: "99"

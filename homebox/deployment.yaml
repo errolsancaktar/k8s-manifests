@@ -16,6 +16,7 @@ spec:
       containers:
       - name: homebox
         image: ghcr.io/hay-kot/homebox:latest
+        imagePullPolicy: Always
         env:
         - name: HBOX_LOG_LEVEL
           value: "info"

@@ -17,6 +17,7 @@ spec:
       containers:
       - name: tautulli
         image: lscr.io/linuxserver/tautulli:latest
+        imagePullPolicy: Always
         env:
         - name: PUID
           value: "1000"

@@ -17,6 +17,7 @@ spec:
       containers:
       - name: overseerr
         image: lscr.io/linuxserver/overseerr:latest
+        imagePullPolicy: Always
         env:
         - name: PUID
           value: "1000"
