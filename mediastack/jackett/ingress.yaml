@@ -1,0 +1,21 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jackett-ingress
+  namespace: mediastack
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: jackett.sancaktar.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jackett-service
+            port:
+              number: 80
+

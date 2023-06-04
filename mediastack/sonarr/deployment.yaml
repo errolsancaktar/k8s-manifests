@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-deployment
+  namespace: mediastack
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8989
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8989
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        env:
+        - name: PUID
+          value: "99"
+        - name: PGID
+          value: "100"
+        ports:
+        - containerPort: 8989
+          name: sonarr-webui
+        volumeMounts:
+        - mountPath: /config
+          name: sonarr-config-vol
+        - mountPath: /downloads
+          name: sonarr-downloads-vol
+        - mountPath: /tv
+          name: sonarr-tv-vol
+      volumes:
+      - name: sonarr-tv-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/TV
+      - name: sonarr-downloads-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/in-process/complete
+      - name: sonarr-config-vol
+        persistentVolumeClaim:
+         claimName: sonarr-config-claim
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

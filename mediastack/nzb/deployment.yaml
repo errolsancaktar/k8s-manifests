@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nzb-deployment
+  namespace: mediastack
+spec:
+  selector:
+    matchLabels:
+      app: nzb
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nzb
+    spec:
+      containers:
+      - name: nzb
+        image: linuxserver/sabnzbd
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        env:
+        - name: PUID
+          value: "99"
+        - name: PGID
+          value: "100"
+        ports:
+        - containerPort: 8080
+          name: nzb-webui
+        volumeMounts:
+        - mountPath: /config
+          name: nzb-config-vol
+        - mountPath: /downloads
+          name: nzb-downloads-vol
+        - mountPath: /tv
+          name: nzb-tv-vol
+      volumes:
+      - name: nzb-tv-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/TV
+      - name: nzb-downloads-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/in-process/complete
+      - name: nzb-config-vol
+        persistentVolumeClaim:
+         claimName: nzb-config-claim
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

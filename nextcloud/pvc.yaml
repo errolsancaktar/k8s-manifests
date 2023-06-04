@@ -1,0 +1,39 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud-www
+  namespace: nextcloud
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: "mayastor"
+  ---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud-db
+  namespace: nextcloud
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: "mayastor"
+  ---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nextcloud-redis
+  namespace: nextcloud
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: "mayastor"

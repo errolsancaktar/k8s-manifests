@@ -1,0 +1,152 @@
+apiVersion: v1
+data:
+  config.yml: |
+    libraries:
+      Movies:
+        metadata_path:
+          - file: config/movies.yaml
+          - pmm: franchise
+          - pmm: genre
+          - pmm: universe
+      TV Shows:
+        metadata_path:
+          - file: config/tv.yaml
+          - pmm: franchise
+          - pmm: genre
+          - pmm: universe
+    settings:
+      cache: true
+      cache_expiration: 60
+      asset_directory: config/assets
+      asset_folders: true
+      asset_depth: 0
+      create_asset_folders: true
+      dimensional_asset_rename: false
+      download_url_assets: true
+      show_missing_season_assets: false
+      sync_mode: append
+      minimum_items: 1
+      default_collection_order:
+      delete_below_minimum: true
+      delete_not_scheduled: false
+      run_again_delay: 2
+      missing_only_released: false
+      only_filter_missing: false
+      show_unmanaged: true
+      show_filtered: false
+      show_options: false
+      show_missing: true
+      show_missing_assets: true
+      save_report: true
+      tvdb_language: eng
+      ignore_ids:
+      ignore_imdb_ids:
+      playlist_sync_to_user: all
+      verify_ssl: true
+    plex:
+      url: http://plex-service-tcp:32400
+      token: iqszXLbrR9trih3et8N-
+      timeout: 60
+      clean_bundles: false
+      empty_trash: false
+      optimize: true
+    tmdb:
+      apikey: 260ee4675bddaf72ff9c975320a13c94
+      language: en
+    omdb:
+      apikey: 391c5f5e
+    radarr:
+      url: http://radarr-service:80
+      token: 0b28cfbcd50a4ea2b82d092e5e928248
+      add_missing: false
+      root_folder_path: /movie
+      monitor: false
+      availability: cinemas
+      quality_profile: HD - 720p/1080p
+      tag: pmm
+      add_existing: false
+      search: false
+      radarr_path:
+      plex_path:
+    sonarr:
+      url: http://sonarr-service:80
+      token: 21c36b35356f4c6e997891f6259b499b
+      add_missing: false
+      add_existing: false
+      root_folder_path: /tv
+      monitor: pilot
+      quality_profile: HD - 720p/1080p
+      language_profile: English
+      series_type: standard
+      season_folder: true
+      tag: pmm
+      search: true
+      cutoff_search: false
+      sonarr_path:
+      plex_path:
+    trakt:
+      client_id: 899bedb14c35bcea2a554fab901a2a098b5d7a7054460bc456b55824977914ea
+      client_secret: 79587cab6e8985052d8ce83a5ed1d94d12bccd95632b6f37300bc64ed5b28797
+      authorization:
+        access_token: 36de9e877c96ca1bc46a8deaa2eccbc92b94420c6c750c4316454a3018c01a03
+        token_type: Bearer
+        expires_in: 7889237
+        refresh_token: 9d27f1647ac4341a9816cab17a4c380142a3bc0c4f931fedaadc4b5662a6e04a
+        scope: public
+        created_at: 1677298034
+      pin:
+kind: ConfigMap
+metadata:
+  name: pmm-config
+  namespace: mediastack
+---
+apiVersion: v1
+data:
+  movies.yaml: |
+    collections:
+      Trakt Popular:
+        trakt_popular: 200
+        collection_order: custom
+        sync_mode: sync
+        sort_title: Traktpopular
+        summary: The most popular movies for all time.
+        radarr_add_missing: true
+        radarr_search: true
+        radarr_monitor: true
+      Tautulli Most Popular Movies:
+        sync_mode: sync
+        collection_order: custom
+        tautulli_watched:
+          list_days: 180
+          list_size: 10
+          list_minimum: 1
+kind: ConfigMap
+metadata:
+  name: movie-config
+  namespace: mediastack
+---
+apiVersion: v1
+data:
+  tv.yaml: |
+    collections:
+      Most Popular:
+        smart_label: originally_available.desc
+        sync_mode: sync
+        imdb_list:
+          url: https://www.imdb.com/search/title/?title_type=tv_series,tv_miniseries
+          limit: 10
+        summary: The 10 most popular shows across the internet
+        sonarr_add_missing: true
+        sonarr_search: true
+        sonarr_monitor: pilot
+      Tautulli Most Popular:
+        sync_mode: sync
+        collection_order: custom
+        summary: The 10 most popular shows from Plex users
+        tautulli_popular:
+          list_days: 180
+          list_size: 10
+kind: ConfigMap
+metadata:
+  name: tv-config
+  namespace: mediastack

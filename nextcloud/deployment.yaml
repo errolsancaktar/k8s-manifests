@@ -1,0 +1,58 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nextcloud-deployment
+  namespace: nextcloud
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nextcloud
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+    spec:
+      containers:
+      - name: nextcloud
+        image:  nextcloud:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "4096Mi"
+          requests:
+            cpu: "50m"
+            memory: "2048Mi"
+        ports:
+        - containerPort: 32414
+          name: gdm-32414
+          protocol: UDP
+        volumeMounts:
+        - mountPath: "/config"
+          name: plex-config
+        - mountPath: "/data"
+          name: media
+        - mountPath: "/transcode"
+          name: transcode
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      volumes:
+      - name: nc-data
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/nextcloud"
+      - name: plex-config
+        persistentVolumeClaim:
+          claimName: plex-config-pvc
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

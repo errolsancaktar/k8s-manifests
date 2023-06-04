@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett-deployment
+  namespace: mediastack
+spec:
+  selector:
+    matchLabels:
+      app: jackett
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      containers:
+      - name: jackett
+        image: ghcr.io/linuxserver/jackett
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "99"
+        - name: PGID
+          value: "100"
+        ports:
+        - containerPort: 9117
+          name: jackett-webui
+        volumeMounts:
+        - mountPath: /config
+          name: jackett-config-vol
+      volumes:
+      - name: jackett-config-vol
+        persistentVolumeClaim:
+         claimName: jackett-config-claim
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

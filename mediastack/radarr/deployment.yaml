@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr-deployment
+  namespace: mediastack
+spec:
+  selector:
+    matchLabels:
+      app: radarr
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+      - name: radarr
+        image: linuxserver/radarr
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7878
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7878
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        env:
+        - name: PUID
+          value: "99"
+        - name: PGID
+          value: "100"
+        ports:
+        - containerPort: 7878
+          name: radarr-webui
+        volumeMounts:
+        - mountPath: /config
+          name: radarr-config-vol
+        - mountPath: /downloads
+          name: radarr-downloads-vol
+        - mountPath: /movie
+          name: radarr-tv-vol
+      volumes:
+      - name: radarr-tv-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/Movies
+      - name: radarr-downloads-vol
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/media/in-process/complete
+      - name: radarr-config-vol
+        persistentVolumeClaim:
+         claimName: radarr-config-claim
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
