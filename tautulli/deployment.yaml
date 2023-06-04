@@ -29,10 +29,6 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: tautulli-config
-      dnsConfig:
-        options:
-          - name: ndots
-            value: "1"
       volumes:
       - name: tautulli-config
         persistentVolumeClaim:

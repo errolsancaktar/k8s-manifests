@@ -29,6 +29,10 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: overseerr-config
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"          
       volumes:
       - name: overseerr-config
         persistentVolumeClaim:
