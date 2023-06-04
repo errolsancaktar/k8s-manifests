@@ -5,7 +5,7 @@ metadata:
   name: vaultwarden-service
 spec:
   selector:
-    app: esphome
+    app: vaultwarden
   ports:
     - port: 80
       protocol: TCP
