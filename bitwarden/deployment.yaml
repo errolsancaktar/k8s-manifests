@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaultwarden-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaultwarden
+  template:
+    metadata:
+      labels:
+        app: vaultwarden
+    spec:
+      containers:
+      - env:
+        - name: WEBSOCKET_ENABLED
+          value: "true"
+        - name: SIGNUPS_ALLOWED
+          value: "false"
+        - name: DOMAIN
+          value: bvw.sancaktar.net
+        - name: ADMIN_TOKEN
+          value_from:
+            secretKeyRef:
+              name: vaultwarden-token
+              key: admin_token
+        - name: ENABLE_DB_WAL
+          value: "false"
+        image: vaultwarden/server:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: vaultwarden
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /data
+          name: vaultwarden-volume
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+      volumes:
+      - name: vaultwarden-volume
+        nfs:
+          path: /mnt/Storage/apps/bitwarden
+          server: 10.10.9.14
