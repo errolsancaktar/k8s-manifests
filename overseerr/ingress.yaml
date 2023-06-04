@@ -2,19 +2,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: tautulli-ingress
+  name: overseerr-ingress
   namespace: mediastack
   annotations:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: media.sancaktar.net
+  - host: overseerr.sancaktar.net
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: tautulli-service    
+            name: overseerr-service    
             port:
               number: 80

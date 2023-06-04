@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tautulli-service
+  name: overseerr-service
   namespace: mediastack
 spec:
   selector:
-    app: tautulli
+    app: overseerr
   ports:
-    - name: tautulli-web
+    - name: overseerr-web
       port: 80
-      targetPort: 8181
+      targetPort: 5055
       protocol: TCP

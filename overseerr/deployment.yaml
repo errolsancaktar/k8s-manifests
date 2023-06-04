@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tautulli-deployment
+  name: overseerr-deployment
   namespace: mediastack
 spec:
   selector:
     matchLabels:
-      app: tautulli
+      app: overseerr
   replicas: 1
   template:
     metadata:
       labels:
-        app: tautulli
+        app: overseerr
     spec:
       containers:
-      - name: tautulli
-        image: lscr.io/linuxserver/tautulli:latest
+      - name: overseerr
+        image: lscr.io/linuxserver/overseerr:latest
         env:
         - name: PUID
           value: "1000"
@@ -25,11 +25,11 @@ spec:
         - name: TZ
           value: "America/Denver"
         ports:
-        - containerPort: 8181
+        - containerPort: 5055
         volumeMounts:
         - mountPath: /config
-          name: tautulli-config
+          name: overseerr-config
       volumes:
-      - name: tautulli-config
+      - name: overseerr-config
         persistentVolumeClaim:
-          claimName: tautulli-config-pvc
+          claimName: overseerr-config-pvc
