@@ -43,7 +43,6 @@ spec:
             secretKeyRef:
               name: snipeit
               key: password
-          valuefrom:
         ports:
         - containerPort: 80
         volumeMounts:
