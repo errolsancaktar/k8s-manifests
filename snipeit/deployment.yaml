@@ -48,6 +48,7 @@ spec:
               name: snipeit
               key: password
         ports:
+        - containerPort: 443
         - containerPort: 80
         volumeMounts:
         - mountPath: /data

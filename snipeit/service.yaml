@@ -8,6 +8,9 @@ spec:
   selector:
     app: snipeit
   ports:
-    - name: snipeit-web
+    - name: snipeit-http
       port: 80
+      protocol: TCP
+    - name: snipeit-https
+      port: 443
       protocol: TCP
