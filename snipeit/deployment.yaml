@@ -34,12 +34,12 @@ spec:
         - name: MYSQL_DATABASE
           value: snipeit
         - name: MYSQL_USER
-          value_from:
+          valueFrom:
             secretKeyRef:
               name: snipeit
               key: user
         - name: MYSQL_PASSWORD
-          value_from:
+          valueFrom:
             secretKeyRef:
               name: snipeit
               key: password
