@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: snipeit-deployment
+  namespace: default
 spec:
   selector:
     matchLabels:
@@ -27,14 +28,21 @@ spec:
         - name: APP_URL
           value: https://inventory.sancaktar.net
         - name: MYSQL_PORT_3306_TCP_ADDR
-          value: 
+          value: "mysql-service"
         - name: MYSQL_PORT_3306_TCP_PORT
-          value: 
+          value: "3306"
         - name: MYSQL_DATABASE
-          value: 
+          value: "snipit"
         - name: MYSQL_USER
-          valuefrom: 
+          value_from:
+            secretKeyRef:
+              name: mysql
+              key: user
         - name: MYSQL_PASSWORD
+          value_from:
+            secretKeyRef:
+              name: mysql
+              key: password
           valuefrom:
         ports:
         - containerPort: 80
@@ -45,8 +53,4 @@ spec:
       - name: snipeit-data
         nfs:
           server: 10.10.9.14
-          path: "/mnt/Storage/apps/homebox"
-      tolerations:
-      - key: "nvidia.com/gpu"
-        operator: "Exists"
-        effect: "NoSchedule"
+          path: "/mnt/Storage/apps/snipeit"
