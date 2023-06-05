@@ -32,14 +32,10 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-        - mountPath: /data
+        - mountPath: /config
           name: mysql-data
       volumes:
       - name: mysql-data
         nfs:
           server: 10.10.9.14
-          path: "/mnt/Storage/apps/homebox"
-      tolerations:
-      - key: "nvidia.com/gpu"
-        operator: "Exists"
-        effect: "NoSchedule"
+          path: "/mnt/Storage/apps/mysql"
