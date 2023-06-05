@@ -9,7 +9,7 @@ metadata:
 spec:
   rules:
   - host: inventory.sancaktar.net
-    http:
+    https:
       paths:
       - path: /
         pathType: Prefix
