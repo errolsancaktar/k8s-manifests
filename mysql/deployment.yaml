@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: lscr.io/linuxserver/mariadb:latest
+        imagePullPolicy: Always
+        env:
+        - name: PGID
+          value: "1000"
+        - name: PUID
+          value: "1000"
+        - name: TZ
+          value: "America/Denver"
+        - name: MYSQL_ROOT_PASSWORD
+          value_from:
+            secretKeyRef:
+              name: mysql
+              key: root_pw
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /data
+          name: mysql-data
+      volumes:
+      - name: mysql-data
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/homebox"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"

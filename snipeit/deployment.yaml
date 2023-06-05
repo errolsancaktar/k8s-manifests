@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snipeit-deployment
+spec:
+  selector:
+    matchLabels:
+      app: snipeit
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: snipeit
+    spec:
+      containers:
+      - name: snipeit
+        image: lscr.io/linuxserver/snipe-it:latest
+        imagePullPolicy: Always
+        env:
+        - name: PGID
+          value: "1000"
+        - name: PUID
+          value: "1000"
+        - name: TZ
+          value: "America/Denver"
+        - name: APP_URL
+          value: https://inventory.sancaktar.net
+        - name: MYSQL_PORT_3306_TCP_ADDR
+          value: 
+        - name: MYSQL_PORT_3306_TCP_PORT
+          value: 
+        - name: MYSQL_DATABASE
+          value: 
+        - name: MYSQL_USER
+          valuefrom: 
+        - name: MYSQL_PASSWORD
+          valuefrom:
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /data
+          name: snipeit-data
+      volumes:
+      - name: snipeit-data
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/homebox"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
