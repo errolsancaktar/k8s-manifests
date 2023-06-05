@@ -27,6 +27,8 @@ spec:
           value: "America/Denver"
         - name: APP_URL
           value: https://inventory.sancaktar.net
+        - name: APP_TRUSTED_PROXIES
+          value: 10.10.8.0/23
         - name: MYSQL_PORT_3306_TCP_ADDR
           value: "mysql-service"
         - name: MYSQL_PORT_3306_TCP_PORT
