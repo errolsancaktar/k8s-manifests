@@ -11,3 +11,5 @@ spec:
     - name: mysql-port
       port: 3306
       protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: 10.10.9.183
