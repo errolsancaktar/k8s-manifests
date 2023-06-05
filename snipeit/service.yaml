@@ -9,5 +9,5 @@ spec:
     app: snipeit
   ports:
     - name: snipeit-web
-      port: 443
+      port: 80
       protocol: TCP
