@@ -32,7 +32,7 @@ spec:
         - name: MYSQL_PORT_3306_TCP_PORT
           value: "3306"
         - name: MYSQL_DATABASE
-          value: "snipeit"
+          value: snipeit
         - name: MYSQL_USER
           value_from:
             secretKeyRef:
