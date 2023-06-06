@@ -47,6 +47,24 @@ spec:
             secretKeyRef:
               name: snipeit
               key: password
+        - name: MAIL_PORT_587_TCP_ADDR
+          value: smtp.gmail.com
+        - name: MAIL_PORT_587_TCP_PORT
+          value: "587"
+        - name: MAIL_ENV_FROM_ADDR
+          value: "inventory@sancaktar.net"
+        - name: MAIL_ENV_FROM_NAME
+          value: "Brunswick Inventory"
+        - name: MAIL_ENV_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: snipeit
+              key: mail_user
+        - name: MAIL_ENV_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: snipeit
+              key: mail_password
         ports:
         - containerPort: 443
         volumeMounts:
