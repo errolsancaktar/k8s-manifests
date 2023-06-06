@@ -35,8 +35,8 @@ spec:
           value: "mysql-service"
         - name: MYSQL_PORT_3306_TCP_PORT
           value: "3306"
-        - name: APP_DEBUG
-          value: "false"
+        - name: LOG_LEVEL
+          value: "debug"
         - name: MYSQL_DATABASE
           value: snipeit
         - name: MYSQL_USER
