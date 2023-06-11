@@ -19,8 +19,8 @@ spec:
       - name: frigate
         image: ghcr.io/blakeblackshear/frigate:stable
         imagePullPolicy: Always
-        securityContext:
-          privileged: true
+        # securityContext:
+        #   privileged: true
         resources:
           limits:
             cpu: 3000m
