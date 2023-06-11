@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: frigate-config-pvc
+  namespace: default
 spec:
   accessModes:
   - ReadWriteOnce

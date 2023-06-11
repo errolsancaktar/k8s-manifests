@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: frigate
+      namespace: default
     spec:
       runtimeClassName: nvidia
       containers:
