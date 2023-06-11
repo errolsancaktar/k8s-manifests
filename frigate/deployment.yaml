@@ -97,7 +97,7 @@ spec:
       - name: cache-volume
         emptyDir:
           medium: Memory
-          sizeLimit: 600Mi
+          sizeLimit: 1Gi
       - name: frigateconfigfile
         configMap: 
           name: frigate-config-file
