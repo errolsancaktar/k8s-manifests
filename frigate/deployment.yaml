@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frigate-deployment
+  namespace: default
 spec:
   selector:
     matchLabels:
@@ -12,7 +13,6 @@ spec:
     metadata:
       labels:
         app: frigate
-      namespace: default
     spec:
       runtimeClassName: nvidia
       containers:
