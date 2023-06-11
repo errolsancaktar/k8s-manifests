@@ -94,7 +94,7 @@ spec:
       - name: frigate-recordings
         nfs:
           server: 10.10.9.14
-          path: "/mnt/Storage/apps/cctv"
+          path: "/mnt/Storage/cctv"
       - name: cache-volume
         emptyDir:
           medium: Memory
