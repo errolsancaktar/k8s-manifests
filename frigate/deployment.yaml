@@ -47,7 +47,7 @@ spec:
           name: frigate-recordings
         - mountPath: /dev/shm
           name: cache-volume
-        - mountPath: 
+        - mountPath: /dev/bus/usb
           name: coral-dev
         lifecycle:
           postStart:
