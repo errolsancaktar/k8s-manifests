@@ -86,3 +86,8 @@ spec:
         emptyDir:
           medium: Memory
           sizeLimit: 1Gi
+      restartPolicy: Always
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
