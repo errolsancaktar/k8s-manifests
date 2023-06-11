@@ -67,7 +67,7 @@ spec:
             path: /
             port: http
             scheme: HTTP
-          initialDelaySeconds: 60
+          initialDelaySeconds: 20
           failureThreshold: 5
           timeoutSeconds: 10
         readinessProbe:
@@ -75,7 +75,7 @@ spec:
             path: /
             port: http
             scheme: HTTP
-          initialDelaySeconds: 60
+          initialDelaySeconds: 20
           failureThreshold: 5
           timeoutSeconds: 10
         startupProbe:

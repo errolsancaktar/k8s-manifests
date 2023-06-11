@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: bitnami/postgresql:latest
+        imagePullPolicy: Always
+        env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres-secret
+              name: password
+        - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: postgres-secret
+                name: username
+        - name: POSTGRESQL_TIMEZONE
+          value: "America/Denver"
+        ports:
+        - name: postgres-port
+          containerPort: 5432
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-data
+        - mountPath: /dev/shm
+          name: dshm
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "784Mi"
+            hugepages-2Mi: 512Mi
+          requests:
+            cpu: "50m"
+            memory: "512Mi"
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - -e
+            - |
+              exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+              [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          failureThreshold: 6
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+      volumes:
+      - name: postgres-data
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/postgres/data"
+      - emptyDir:
+          medium: Memory
+          sizeLimit: 1Gi
