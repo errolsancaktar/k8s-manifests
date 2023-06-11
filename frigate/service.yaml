@@ -14,3 +14,5 @@ spec:
     - name: rtmp
       protocol: TCP
       port: 1935
+  type: LoadBalancer
+  loadBalancerIP: 10.10.9.184
