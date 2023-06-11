@@ -72,8 +72,8 @@ spec:
         configMap: 
           name: frigate-config-file
       - name: coral-dev
-        hostPath: /dev/bus/usb
-          path: 
+        hostPath:
+          path: /dev/bus/usb
       # dnsConfig:
       #   options:
       #   - name: ndots
