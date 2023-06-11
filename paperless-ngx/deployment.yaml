@@ -73,6 +73,8 @@ spec:
           name: paperless-incoming
         - mountPath: /usr/src/paperless/export
           name: paperless-export
+        - mountPath: /config
+          name: paperless-config
         resources:
           limits:
             cpu: "1000m"
@@ -105,7 +107,6 @@ spec:
         nfs:
           server: 10.10.9.14
           path: /mnt/Storage/apps/paperless/export
-
       - name: paperless-config
         persistentVolumeClaim:
           claimName: paperless-config-pvc
