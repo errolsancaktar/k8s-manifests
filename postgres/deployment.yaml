@@ -82,6 +82,7 @@ spec:
         nfs:
           server: 10.10.9.14
           path: "/mnt/Storage/apps/postgres/data"
-      - emptyDir:
+      - name: dshm
+        emptyDir:
           medium: Memory
           sizeLimit: 1Gi
