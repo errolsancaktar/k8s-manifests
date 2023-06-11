@@ -27,10 +27,10 @@ spec:
               key: postgres-secret
               name: password
         - name: POSTGRES_USERNAME
-            valueFrom:
-              secretKeyRef:
-                key: postgres-secret
-                name: username
+          valueFrom:
+            secretKeyRef:
+              key: postgres-secret
+              name: username
         - name: POSTGRESQL_TIMEZONE
           value: "America/Denver"
         ports:
