@@ -24,7 +24,7 @@ spec:
         resources:
           limits:
             cpu: 3000m
-            memory: 1Gi
+            memory: 2Gi
         env:
         - name: PUID
           value: "99"
@@ -49,7 +49,7 @@ spec:
           name: frigateconfigfile
         - mountPath: /config
           name: frigate-config
-        - mountPath: /media/frigate/recordings
+        - mountPath: /media/frigate
           name: frigate-recordings
         - mountPath: /dev/shm
           name: cache-volume
@@ -97,7 +97,7 @@ spec:
       - name: cache-volume
         emptyDir:
           medium: Memory
-          sizeLimit: 600Mi
+          sizeLimit: 1Gi
       - name: frigateconfigfile
         configMap: 
           name: frigate-config-file
