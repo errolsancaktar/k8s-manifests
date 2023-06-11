@@ -38,26 +38,26 @@ spec:
             secretKeyRef:
               key: paperless-key
               name: paperless-secret
-        - name: PAPERLESS_DBNAME
-          valueFrom:
-            secretKeyRef:
-              key: dbname
-              name: paperless-secret
-        - name: PAPERLESS_DBUSER
-          valueFrom:
-            secretKeyRef:
-              key: dbuser
-              name: paperless-secret
-        - name: PAPERLESS_DBPASS
-          valueFrom:
-            secretKeyRef:
-              key: dbpass
-              name: paperless-secret
-        - name: PAPERLESS_DBHOST
-          valueFrom:
-            secretKeyRef:
-              key: dbhost
-              name: paperless-secret
+        # - name: PAPERLESS_DBNAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       key: dbname
+        #       name: paperless-secret
+        # - name: PAPERLESS_DBUSER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       key: dbuser
+        #       name: paperless-secret
+        # - name: PAPERLESS_DBPASS
+        #   valueFrom:
+        #     secretKeyRef:
+        #       key: dbpass
+        #       name: paperless-secret
+        # - name: PAPERLESS_DBHOST
+        #   valueFrom:
+        #     secretKeyRef:
+        #       key: dbhost
+        #       name: paperless-secret
         
 
         ports:
