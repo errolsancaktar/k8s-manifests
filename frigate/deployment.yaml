@@ -24,7 +24,7 @@ spec:
         resources:
           limits:
             cpu: 3000m
-            memory: 512Mi
+            memory: 1Gi
         env:
         - name: PUID
           value: "99"
@@ -97,7 +97,7 @@ spec:
       - name: cache-volume
         emptyDir:
           medium: Memory
-          sizeLimit: 1Gi
+          sizeLimit: 600Mi
       - name: frigateconfigfile
         configMap: 
           name: frigate-config-file
