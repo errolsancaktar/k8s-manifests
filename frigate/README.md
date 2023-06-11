@@ -1,1 +1,1 @@
-k8s-esphome
+Frigate Manifest
