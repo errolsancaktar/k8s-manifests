@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frigate-service
+spec:
+  selector:
+    app: frigate
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+    - name: rtmp
+      protocol: TCP
+      port: 1935

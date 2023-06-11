@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frigate-deployment
+spec:
+  selector:
+    matchLabels:
+      app: frigate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frigate
+    spec:
+      runtimeClassName: nvidia
+      containers:
+      - name: frigate
+        image: ghcr.io/blakeblackshear/frigate:stable
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "99"
+        - name: PGID
+          value: "100"
+        - name: TZ
+          value: "America/Denver"
+        - name:  NVIDIA_VISIBLE_DEVICES
+          value: all
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: all
+        ports:
+        - name: http
+          containerPort: 5000
+          protocol: TCP
+        - name: rtmp
+          containerPort: 1935
+          protocol: TCP 
+        volumeMounts:
+        - mountPath: /tmp/conf/config.yml
+          subPath: config.yml
+          name: frigateconfigfile
+        - mountPath: /config
+          name: frigate-config
+        - mountPath: /media/frigate/recordings
+          name: frigate-recordings
+        - mountPath: /dev/shm
+          name: cache-volume
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "cp /tmp/conf/config.yml /config/config.yml"
+      volumes:
+      - name: frigate-config
+        persistentVolumeClaim:
+          claimName: frigate-config-pvc
+      - name: frigate-recordings
+        nfs:
+          server: 10.10.9.14
+          path: "/mnt/Storage/apps/cctv"
+      - name: cache-volume
+        emptyDir:
+          medium: Memory
+          sizeLimit: 256Mi
+      - name: frigateconfigfile
+        configMap: 
+          name: frigate-config-file
+      # dnsConfig:
+      #   options:
+      #   - name: ndots
+      #     value: "2"
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
