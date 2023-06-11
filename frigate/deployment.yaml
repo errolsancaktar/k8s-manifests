@@ -104,10 +104,10 @@ spec:
       # - name: coral-dev
       #   hostPath:
       #     path: /dev/bus/usb
-      # dnsConfig:
-      #   options:
-      #   - name: ndots
-      #     value: "2"
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
       tolerations:
       - key: "nvidia.com/gpu"
         operator: "Exists"
