@@ -67,11 +67,11 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-        - mountPath: /usr/src/paperless/data
-          name: paperless-data-folder
-        - mountPath: /usr/src/paperless/consume
+        - mountPath: /data/consume
           name: paperless-incoming
-        - mountPath: /usr/src/paperless/export
+        - mountPath: /data/export
+          name: paperless-media
+        - mountPath: /data/media
           name: paperless-export
         - mountPath: /config
           name: paperless-config
@@ -95,14 +95,14 @@ spec:
           timeoutSeconds: 5
 
       volumes:
-      - name: paperless-data-folder
-        nfs:
-          server: 10.10.9.14
-          path: /mnt/Storage/apps/paperless/data
       - name: paperless-incoming
         nfs:
           server: 10.10.9.14
           path: /mnt/Storage/apps/paperless/incoming
+      - name: paperless-media
+        nfs:
+          server: 10.10.9.14
+          path: /mnt/Storage/apps/paperless/media
       - name: paperless-export
         nfs:
           server: 10.10.9.14
