@@ -81,7 +81,7 @@ spec:
       - name: postgres-data
         nfs:
           server: 10.10.9.14
-          path: "/mnt/Storage/apps/postgres/data"
+          path: /mnt/Storage/apps/paperless/data
       - name: dshm
         emptyDir:
           medium: Memory
