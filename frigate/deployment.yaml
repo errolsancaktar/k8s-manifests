@@ -53,8 +53,8 @@ spec:
           name: frigate-recordings
         - mountPath: /dev/shm
           name: cache-volume
-        - mountPath: /dev/bus/usb/005/003
-          name: coral-dev
+        # - mountPath: /dev/bus/usb
+        #   name: coral-dev
         lifecycle:
           postStart:
             exec:
@@ -101,9 +101,9 @@ spec:
       - name: frigateconfigfile
         configMap: 
           name: frigate-config-file
-      - name: coral-dev
-        hostPath:
-          path: /dev/bus/usb/005/003
+      # - name: coral-dev
+      #   hostPath:
+      #     path: /dev/bus/usb
       # dnsConfig:
       #   options:
       #   - name: ndots
