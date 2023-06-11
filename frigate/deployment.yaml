@@ -2,13 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frigate-deployment
+  name: frigate
   namespace: default
 spec:
   selector:
     matchLabels:
       app: frigate
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
