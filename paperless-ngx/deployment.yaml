@@ -79,10 +79,10 @@ spec:
           name: paperless-config
         resources:
           limits:
-            cpu: "2000m"
-            memory: "512Mi"
+            cpu: "2"
+            memory: "2048Mi"
           requests:
-            cpu: "50m"
+            cpu: "10m"
             memory: "256Mi"
         readinessProbe:
           exec:
