@@ -38,7 +38,7 @@ spec:
       - name: esphome-data
         nfs:
           server: 10.10.9.14
-          path: /mnt/Storage/apps/esphome/data
+          path: /mnt/Storage/apps/espHome/data
       dnsConfig:
         options:
         - name: ndots
