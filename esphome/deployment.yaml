@@ -27,9 +27,9 @@ spec:
         ports:
         - containerPort: 6052
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /old
           name: esphome-volume
-        - mountPath: /data
+        - mountPath: /config
           name: esphome-data
       volumes:
       - name: esphome-volume
