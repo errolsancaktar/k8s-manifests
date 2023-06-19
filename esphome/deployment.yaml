@@ -29,10 +29,16 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: esphome-volume
+        - mountPath: /data
+          name: esphome-data
       volumes:
       - name: esphome-volume
         persistentVolumeClaim:
           claimName: esphome-config-pvc
+      - name: esphome-data
+        nfs:
+          path: /mnt/Storage/apps/esphome/data
+          server: 10.10.9.14
       dnsConfig:
         options:
         - name: ndots
