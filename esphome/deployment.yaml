@@ -37,8 +37,8 @@ spec:
           claimName: esphome-config-pvc
       - name: esphome-data
         nfs:
-          path: /mnt/Storage/apps/esphome/data
           server: 10.10.9.14
+          path: /mnt/Storage/apps/esphome/data
       dnsConfig:
         options:
         - name: ndots
